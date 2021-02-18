@@ -3,15 +3,14 @@ const router = express.Router();
 const multer = require('multer');
 var ffmpeg = require('fluent-ffmpeg');
 
-const { Video } = require("../models/Video");
+const { User } = require("../models/User");
+
 const { auth } = require("../middleware/auth");
 
-
-
-
 var storage = multer.diskStorage({
+
     destination: (req, file, cb) => {
-        cb(null, 'uploads/')//저장하면 uploads 에  전부 저장이됨.
+        cb(null, 'uploads/')
     },
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}_${file.originalname}`)
@@ -24,25 +23,19 @@ var storage = multer.diskStorage({
         cb(null, true)
     }
 })
-
 var upload = multer({ storage: storage }).single("file")
-
-
 //=================================
-//             video
+//             User
 //=================================
-
-
 router.post("/uploadfiles", (req, res) => {
-    //비디오를 서버에 저장한다.
     upload(req, res, err => {
         if (err) {
             return res.json({ success: false, err })
         }
         return res.json({ success: true, filePath: res.req.file.path, fileName: res.req.file.filename })
     })
-
 });
+
 
 router.post("/thumbnail", (req, res) => {
 
@@ -76,7 +69,6 @@ router.post("/thumbnail", (req, res) => {
         });
 
 });
-
 
 
 
