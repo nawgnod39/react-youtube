@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 var ffmpeg = require('fluent-ffmpeg');
 
-const { User } = require("../models/User");
+const { Video } = require("../models/Video");
 
 const { auth } = require("../middleware/auth");
 
@@ -23,6 +23,7 @@ var storage = multer.diskStorage({
         cb(null, true)
     }
 })
+
 var upload = multer({ storage: storage }).single("file")
 //=================================
 //             User
@@ -69,6 +70,37 @@ router.post("/thumbnail", (req, res) => {
         });
 
 });
+
+
+
+router.get("/getVideos", (req, res) => {
+    // 비디오를 DB에서 가져와서 클라이언에 보낸다.
+
+    Video.find()//모든비디오를 가져옴. 
+        .populate('writer')//
+        .exec((err, videos) => {
+            if(err) return res.status(400).send(err);
+            res.status(200).json({ success: true, videos })
+        })
+
+});
+
+
+
+
+router.post("/uploadVideo", (req, res) => {
+//비디오 정보들 저장.
+    const video = new Video(req.body)
+
+    video.save((err, video) => {
+        if(err) return res.status(400).json({ success: false, err })
+        return res.status(200).json({
+            success: true 
+        })
+    })
+
+});
+
 
 
 
