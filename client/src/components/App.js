@@ -8,7 +8,7 @@ import RegisterPage from "./views/RegisterPage/RegisterPage.js";
 import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer"
 import UploadVideoPage from "./views/UploadVideoPage/UploadVideoPage"
-
+import DetailVideoPage from "./views/DetailVideoPage/DetailVideoPage"
 function App() {
   return (
     <Suspense fallback={(<div>Loading...</div>)}>
@@ -19,6 +19,7 @@ function App() {
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
           <Route exact path="/video/upload" component={Auth(UploadVideoPage, true)} />
+          <Route exact path="/video/:videoId" component={Auth(DetailVideoPage, null)} />
 
         </Switch>
       </div>
