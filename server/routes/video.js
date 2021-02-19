@@ -102,7 +102,7 @@ router.post("/uploadVideo", (req, res) => {
 });
 
 router.post("/getVideo", (req, res) => {
-
+//video detail 부분. 전달 
     Video.findOne({ "_id" : req.body.videoId })
     .populate('writer')
     .exec((err, video) => {
