@@ -59,7 +59,7 @@ function LandingPage() {
         <div style={{ width: '85%', margin: '3rem auto' }}>
             <Title level={2} > Recommended </Title>
             <hr />
-            <Row>
+            <Row gutter={16}>
                 {renderCards}
             </Row>
         </div>
