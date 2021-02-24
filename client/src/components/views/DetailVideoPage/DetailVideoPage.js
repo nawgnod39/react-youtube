@@ -66,17 +66,16 @@ function DetailVideoPage(props) {
 
                 </Col>
             </Row>
+    
         )
-
+        
     } else {
         return(
             <div>Loading...</div>
         )
     }
 
-
+    }
 }
 
 export default DetailVideoPage
-
-
