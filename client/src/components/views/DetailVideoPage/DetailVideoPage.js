@@ -24,8 +24,18 @@ function DetailVideoPage(props) {
                     alert('Failed to get video Info')
                 }
             })
-    }, [])
 
+            axios.post('/api/comment/getComments', videoVariable)
+            .then(response => {
+                if (response.data.success) {
+                    console.log('response.data.comments',response.data.comments)
+                    setCommentLists(response.data.comments)
+                } else {
+                    alert('Failed to get video Info')
+                }
+            })            
+    }, [])
+    const updateComment = (newComment) => {
     if(Video.writer) {
         
        // const subscribeButton = VideoDetail.wirter._id !== localStorage.getItem('userId') && <Subscriber userTo={VideoDetail.writer._id} userFrom={localStorage.getItem('userId')}/>
@@ -37,7 +47,7 @@ function DetailVideoPage(props) {
 
                         <List.Item
                            // actions = {[subscribeButton]}
-                            actions={[ <Subscriber userTo={Video.writer._id} userFrom={localStorage.getItem('userId')} /> ]}
+                           actions={[<Subscriber userTo={Video.writer._id} userFrom={localStorage.getItem('userId')} />]}
                         >
                             <List.Item.Meta
                                 avatar={<Avatar src={Video.writer && Video.writer.image} />}
@@ -46,8 +56,7 @@ function DetailVideoPage(props) {
                             />
                             <div></div>
                         </List.Item>
-                        <Comments />
-
+                        <Comments CommentLists={CommentLists} postId={Video._id} refreshFunction={updateComment} />
                     </div>
                 </Col>
                 <Col lg={6} xs={24}>
