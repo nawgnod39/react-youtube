@@ -18,6 +18,7 @@ router.post("/subscribeNumber", (req, res) => {
         if(err) return res.status(400).send(err)
 
         res.status(200).json({ success: true, subscribeNumber: subscribe.length  })
+        //몇개의 케이스가 나오는지 length 로 심플하게 정보를 전달함.
     })
 
 });
