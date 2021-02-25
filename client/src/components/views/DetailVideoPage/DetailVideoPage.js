@@ -2,22 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { List, Avatar, Row, Col } from 'antd';
 import axios from 'axios';
 import SideVideo from './Sections/SideVideo';
-import Subscriber from './Sections/Subscriber'
-import Comments from './Sections/Comments';
+import Subscriber from './Sections/Subscriber';
+import Comments from './Sections/Comments'
 function DetailVideoPage(props) {
-
-
     const videoId = props.match.params.videoId
     const [Video, setVideo] = useState([])
-
+    const [CommentLists, setCommentLists] = useState([])
     const videoVariable = {
         videoId: videoId
     }
-
     useEffect(() => {
-        axios.post('/api/video/getVideo', videoVariable)//videoVariable 을 생성해야 아이디를 보내고 데이터를 가져올수있음 .
+        axios.post('/api/video/getVideo', videoVariable)
             .then(response => {
-                if (response.data.success) {//성공을 하면  useState 에 저장을한다.  const [Video, setVideo] = useState([])
+                if (response.data.success) {
                     console.log(response.data.video)
                     setVideo(response.data.video)
                 } else {
@@ -25,7 +22,7 @@ function DetailVideoPage(props) {
                 }
             })
 
-            axios.post('/api/comment/getComments', videoVariable)
+        axios.post('/api/comment/getComments', videoVariable)
             .then(response => {
                 if (response.data.success) {
                     console.log('response.data.comments',response.data.comments)
@@ -33,21 +30,28 @@ function DetailVideoPage(props) {
                 } else {
                     alert('Failed to get video Info')
                 }
-            })            
+            })
+
+
     }, [])
+    
+
     const updateComment = (newComment) => {
-    if(Video.writer) {
-        
-       // const subscribeButton = VideoDetail.wirter._id !== localStorage.getItem('userId') && <Subscriber userTo={VideoDetail.writer._id} userFrom={localStorage.getItem('userId')}/>
+        setCommentLists(CommentLists.concat(newComment))
+    }
+
+
+
+    if (Video.writer) {
         return (
             <Row>
                 <Col lg={18} xs={24}>
                     <div className="postPage" style={{ width: '100%', padding: '3rem 4em' }}>
                         <video style={{ width: '100%' }} src={`http://localhost:5000/${Video.filePath}`} controls></video>
+    
 
                         <List.Item
-                           // actions = {[subscribeButton]}
-                           actions={[<Subscriber userTo={Video.writer._id} userFrom={localStorage.getItem('userId')} />]}
+                            actions={[<Subscriber userTo={Video.writer._id} userFrom={localStorage.getItem('userId')} />]}
                         >
                             <List.Item.Meta
                                 avatar={<Avatar src={Video.writer && Video.writer.image} />}
@@ -60,22 +64,25 @@ function DetailVideoPage(props) {
                     </div>
                 </Col>
                 <Col lg={6} xs={24}>
+    
 
                     <SideVideo />
-                    
+    
 
                 </Col>
             </Row>
-    
         )
-        
+    
+
     } else {
-        return(
+        return (
             <div>Loading...</div>
         )
     }
+    
+    
 
-    }
+
 }
 
 export default DetailVideoPage
