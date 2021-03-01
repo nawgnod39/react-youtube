@@ -25,6 +25,7 @@ const Catogory = [
 function UploadVideoPage(props) {
     const user = useSelector(state => state.user);
 
+    //사용할 value를 usestate에 선언해준다.
     const [title, setTitle] = useState("");
     const [Description, setDescription] = useState("");
     const [privacy, setPrivacy] = useState(0)
@@ -35,6 +36,7 @@ function UploadVideoPage(props) {
 
 
 
+    //onChange 이벤트 
     const handleChangeTitle = (event) => {
         setTitle(event.currentTarget.value)
     }
@@ -77,7 +79,7 @@ function UploadVideoPage(props) {
             thumbnail: Thumbnail
         }
 
-        axios.post('/api/video/uploadVideo', variables)
+        axios.post('/api/video/uploadVideo', variables)//서버에 보내기위함, 서버에 라우트생성해야함.
             .then(response => {
                 if (response.data.success) {
                     alert('video Uploaded Successfully')
@@ -101,7 +103,7 @@ function UploadVideoPage(props) {
         axios.post('/api/video/uploadfiles', formData, config)
             .then(response => {
                 if (response.data.success) {
-                    let variable = {
+                    let variable = {//여기서 경로를 서버에서 받아온 뒤 아래에서 axios 를 사용해서  다시 서버에 보냄.
                         filePath: response.data.filePath,
                         fileName: response.data.fileName
                     }
@@ -110,11 +112,11 @@ function UploadVideoPage(props) {
 
                     //gerenate thumbnail with this filepath ! 
 
-                    axios.post('/api/video/thumbnail', variable)
+                    axios.post('/api/video/thumbnail', variable)//axios로 서버에 request 를 보냄.
                         .then(response => {
                             if (response.data.success) {
                                 setDuration(response.data.fileDuration)
-                                setThumbnail(response.data.thumbsFilePath)
+                                setThumbnail(response.data.thumbsFilePath) 
                             } else {
                                 alert('Failed to make the thumbnails');
                             }

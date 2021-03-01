@@ -20,7 +20,7 @@ function RightMenu(props) {
   };
 
   if (user.userData && !user.userData.isAuth) {
-    return (
+    return (//로그인을 하지않은 사람은 이쪽이 randering 된다.
       <Menu mode={props.mode}>
         <Menu.Item key="mail">
           <a href="/login">Signin</a>
@@ -31,7 +31,7 @@ function RightMenu(props) {
       </Menu>
     )
   } else {
-    return (
+    return (//로그인 한사람은 이쪽이 randering 됨
       <Menu mode={props.mode}>
         <Menu.Item key="upload">
           <a href="/video/upload">Video</a>

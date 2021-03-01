@@ -39,11 +39,11 @@ router.post("/uploadfiles", (req, res) => {
 
 
 router.post("/thumbnail", (req, res) => {
-
+    //썸네일 생성하고 비디오 러닝타임정보를 가져오기 . 
     let thumbsFilePath ="";
-    let fileDuration ="";
+    let fileDuration ="";//러닝타임 
 
-    ffmpeg.ffprobe(req.body.filePath, function(err, metadata){
+    ffmpeg.ffprobe(req.body.filePath, function(err, metadata){//ffmpeg 받을 때 자동적으로 메타데이터들을 받아옴. 
         console.dir(metadata);
         console.log(metadata.format.duration);
 
@@ -51,18 +51,18 @@ router.post("/thumbnail", (req, res) => {
     })
 
 
-    ffmpeg(req.body.filePath)
-        .on('filenames', function (filenames) {
+    ffmpeg(req.body.filePath)//클라이언트에서본 경로 
+        .on('filenames', function (filenames) {//파일이름 생성 
             console.log('Will generate ' + filenames.join(', '))
             thumbsFilePath = "uploads/thumbnails/" + filenames[0];
         })
-        .on('end', function () {
+        .on('end', function () {//생성하고 무엇을 할것인지 
             console.log('Screenshots taken');
             return res.json({ success: true, thumbsFilePath: thumbsFilePath, fileDuration: fileDuration})
         })
         .screenshots({
             // Will take screens at 20%, 40%, 60% and 80% of the video
-            count: 3,
+            count: 3,//옵션 세개의 썸네일 가능 .
             folder: 'uploads/thumbnails',
             size:'320x240',
             // %b input basename ( filename w/o extension )
